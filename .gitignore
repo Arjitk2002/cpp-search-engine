@@ -1,0 +1,8 @@
+/search_engine
+/main
+/storage/
+*.o
+*.dSYM/
+.DS_Store
+/.vscode/
+/data/img.png

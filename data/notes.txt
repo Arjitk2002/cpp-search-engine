@@ -1,0 +1,3 @@
+Binary search works on sorted data.
+Graphs contain vertices and edges.
+I practice DSA using C++.

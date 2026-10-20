@@ -1,0 +1,2 @@
+Graphs contain vertices and edges.
+Dijkstra finds shortest paths with non-negative edge weights.
