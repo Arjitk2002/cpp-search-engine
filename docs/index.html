@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore Arjit Kaler’s C++ document search engine. Search text files, inspect ranked results, and understand every score.">
+  <title>Folio — C++ Document Search</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8zM14 3v6h5M8 13h8M8 17h5"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+    <symbol id="code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></symbol>
+    <symbol id="external" viewBox="0 0 24 24"><path d="M14 3h7v7m0-7L10 14M10 4H4v16h16v-6"/></symbol>
+    <symbol id="layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8zM2 12l10 5 10-5M2 17l10 5 10-5"/></symbol>
+    <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Folio home"><span class="brand-mark">f</span><span>folio<span class="brand-period">.</span></span></a>
+    <span class="header-divider"></span><span class="header-label">A C++ search engine, opened up.</span>
+    <div class="header-right"><span class="private-badge"><svg><use href="#code"/></svg>Interactive demo</span><a class="source-link" href="https://github.com/Arjitk2002/cpp-search-engine" target="_blank" rel="noopener noreferrer">View source <svg><use href="#external"/></svg></a><span class="avatar" title="Built by Arjit Kaler">AK</span></div>
+  </header>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Document collection">
+      <div class="section-kicker">WORKSPACE</div>
+      <div class="collection-heading"><svg><use href="#layers"/></svg><h2>Document collection</h2><span id="side-count" class="count-badge">—</span></div>
+      <div class="sidebar-caption">Small files. Searchable ideas.</div>
+      <div class="collection-label"><span>FILES</span><span>.txt only</span></div>
+      <div id="file-list" class="file-list"></div>
+      <button class="add-files" id="add-files" disabled><svg><use href="#plus"/></svg>Add .txt files</button>
+      <input type="file" id="file-input" accept=".txt,text/plain" multiple hidden>
+      <p class="upload-note">Files stay in this browser session.<br>Refresh to restore the sample collection.</p>
+      <button id="reset" class="text-button reset-button" hidden>↺ Restore sample files</button>
+      <div class="sidebar-bottom">
+        <div class="runtime-card"><div class="runtime-top"><span class="status-dot" id="status-dot"></span><span id="runtime-status">Starting engine…</span><svg><use href="#code"/></svg></div><strong>C++17 <span>→</span> WebAssembly</strong><p>The original engine.<br>Running in your browser.</p></div>
+        <button class="about-button" id="about-open">How it works <span>↗</span></button>
+        <div class="maker">Designed & built by <strong>Arjit Kaler</strong></div>
+      </div>
+    </aside>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy"><div class="eyebrow"><span></span>FROM TERMINAL TO TAB</div><h1 id="page-title">Your documents.<br>A little easier to <em>find.</em></h1><p>A C++ engine for the words that matter.<br>Search your collection. See why each result ranks.</p></div>
+        <div class="collection-stats"><div><span class="stat-label">DOCUMENTS</span><strong id="doc-count">—</strong><span class="stat-detail">in the collection</span></div><div><span class="stat-label">UNIQUE TERMS</span><strong id="term-count">—</strong><span class="stat-detail">in the inverted index</span></div><div class="stats-foot"><span class="status-dot"></span>Local execution · Zero API calls</div></div>
+      </section>
+      <section aria-label="Search documents" class="search-section">
+        <form id="search-form" role="search"><label class="sr-only" for="query">Search your documents</label><svg class="search-icon"><use href="#search"/></svg><input id="query" name="query" type="search" placeholder="Search your documents…" autocomplete="off" maxlength="500" value="binary search" disabled><kbd class="shortcut">/</kbd><button id="search-button" type="submit" disabled>Search <svg><use href="#arrow"/></svg></button></form>
+        <div class="search-helper"><div class="examples"><span>TRY A QUERY</span><button data-query="binary search" disabled>binary search <span>↗</span></button><button data-query="graphs" disabled>graphs <span>↗</span></button><button data-query="dijkstra" disabled>dijkstra <span>↗</span></button></div><span class="search-mode">Multi-word · Any term matches</span></div>
+      </section>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section class="workspace-results" aria-label="Search results and document inspector">
+        <div class="results-topline"><div><h2 id="results-heading">Opening the collection…</h2><span id="search-time"></span></div><span class="ranking-label"><span class="sort-bars">≋</span> Ranked by TF-IDF <button id="ranking-help" aria-label="Explain TF-IDF ranking">i</button></span></div>
+        <div class="results-grid">
+          <div class="results-column"><div class="query-terms" id="query-terms"></div><div id="results" aria-labelledby="results-heading" aria-live="polite"><div class="loading-state">Compiling a path from question to answer…</div></div></div>
+          <section class="inspector" id="inspector" aria-label="Document inspector"><div class="inspector-placeholder"><svg><use href="#file"/></svg><h3>A closer look</h3><p>Select a result or a file to inspect its contents.</p></div></section>
+        </div>
+      </section>
+      <footer class="main-footer"><span><svg><use href="#code"/></svg> C++ at the core. Clarity on the surface.</span><span>FOLIO / 01</span></footer>
+    </main>
+  </div>
+  <dialog id="about-dialog" aria-labelledby="about-title"><button class="dialog-close" id="about-close" aria-label="Close explanation"><svg><use href="#close"/></svg></button><span class="eyebrow">UNDER THE HOOD</span><h2 id="about-title">A small engine.<br>Real information retrieval.</h2><p>Folio runs the original C++ project as WebAssembly. The browser adds an interface; the existing classes do the searching.</p><ol class="pipeline"><li><strong>01 · Load</strong><span>Read the sample .txt files, or add your own to the current session.</span></li><li><strong>02 · Tokenize & index</strong><span>Lowercase alphanumeric tokens map to document IDs and occurrence counts.</span></li><li><strong>03 · Query & rank</strong><span>Deduplicate query terms, match any term, and sum term frequency × inverse document frequency.</span></li><li><strong>04 · Inspect</strong><span>Read the matching document and see each term’s contribution to its score.</span></li></ol><div class="formula"><code>score = Σ TF × [1 + ln((N + 1) / (df + 1))]</code><p>N = documents in the collection · df = documents containing a term</p></div><p class="about-note">Equal scores use ascending document ID. Punctuation splits words; phrases, fuzzy matching, and Unicode tokenization are not supported. The terminal app and its snapshot storage are preserved in the source.</p><a class="dialog-source" href="https://github.com/Arjitk2002/cpp-search-engine" target="_blank" rel="noopener noreferrer">Explore the original C++ source <span>↗</span></a></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
